@@ -7,9 +7,51 @@
     <link rel="stylesheet" href="style.css" />
   </head>
   <body>
-    <div class="scene"></div>
-    <script src="./three.min.js"></script>
-    <script src="./GLTFLoader.js"></script>
-    <script src="./app.js"></script>
+    <script src="./build/three.min.js"></script>
+    <script src="GLTFLoader.js"></script>
+    <script src="OrbitControls.js"></script>
+
+    <script>
+      let scene, camera, renderer;
+
+      function init() {
+        scene = new THREE.Scene();
+        scene.background = new THREE.Color(0xdddddd);
+
+        camera = new THREE.PerspectiveCamera(
+          40,
+          window.innerWidth / window.innerHeight,
+          1,
+          500
+        );
+        // camera.position.set(0, 2, 20);
+        camera.position.y = 2;
+        camera.position.z = 20;
+        ambielntLight = new THREE.AmbientLight(0x404040, 3);
+        scene.add(ambielntLight);
+
+        renderer = new THREE.WebGLRenderer({ antialias: true });
+        renderer.setSize(window.innerWidth, window.innerHeight);
+        document.body.appendChild(renderer.domElement);
+
+        controls = new THREE.OrbitControls(camera, renderer.domElement);
+        controls.addEventListener("change", renderer);
+
+        let loader = new THREE.GLTFLoader();
+        loader.load("./Assets/Models/house/scene.gltf", function (gltf) {
+          scene.add(gltf.scene);
+          house = gltf.scene.children[0];
+          rotateHouse();
+        });
+      }
+
+      function rotateHouse() {
+        requestAnimationFrame(rotateHouse);
+        renderer.render(scene, camera);
+        house.rotation.z -= 0.0025;
+      }
+
+      init();
+    </script>
   </body>
 </html>
