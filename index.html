@@ -11,8 +11,11 @@
     <script src="GLTFLoader.js"></script>
     <script src="OrbitControls.js"></script>
 
+    <div class="scene"></div>
+
     <script>
       let scene, camera, renderer;
+      let container;
 
       function init() {
         scene = new THREE.Scene();
@@ -24,7 +27,7 @@
           1,
           500
         );
-        // camera.position.set(0, 2, 20);
+
         camera.position.y = 2;
         camera.position.z = 20;
         ambielntLight = new THREE.AmbientLight(0x404040, 5);
